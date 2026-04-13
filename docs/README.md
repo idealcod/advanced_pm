@@ -4,7 +4,7 @@ A backend service for managing events using Go, PostgreSQL, and Redis, designed 
 
 ---
 
-## 📌 Problem
+##  Problem
 
 Managing event-based data efficiently requires:
 - fast access to data
@@ -15,7 +15,7 @@ This project demonstrates how to build a backend system that solves these proble
 
 ---
 
-## 🚀 Features
+##  Features
 
 - Event management (create, read, update)
 - PostgreSQL database integration
@@ -26,7 +26,7 @@ This project demonstrates how to build a backend system that solves these proble
 
 ---
 
-## 🛠️ Technology Stack
+##  Technology Stack
 
 - Go (Golang)
 - PostgreSQL
@@ -35,7 +35,7 @@ This project demonstrates how to build a backend system that solves these proble
 
 ---
 
-## ⚙️ Installation
+##  Installation
 
 ### 1. Clone the repository
 
