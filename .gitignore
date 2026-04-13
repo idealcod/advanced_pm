@@ -1,0 +1,15 @@
+
+/bin/
+/build/
+
+
+.env
+
+
+
+.vscode/
+.idea/
+
+
+
+*.log

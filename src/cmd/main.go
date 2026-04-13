@@ -3,7 +3,7 @@ package main
 import (
 	"log"
 	"net/http"
-	"ramadan-arc/internal"
+	"ramadan-arc/src/internal"
 )
 
 func main() {
