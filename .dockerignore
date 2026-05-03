@@ -1,0 +1,9 @@
+.git
+.env
+.env.*
+ramadan-arc-frontend/node_modules
+ramadan-arc-frontend/.next
+node_modules
+bin
+build
+*.log

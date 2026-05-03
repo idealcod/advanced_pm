@@ -13,3 +13,8 @@
 
 
 *.log
+*.tsbuildinfo
+
+node_modules/
+.next/
+.env.local

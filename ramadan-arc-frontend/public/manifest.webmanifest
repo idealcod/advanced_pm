@@ -1,0 +1,18 @@
+{
+  "name": "Ramadan ARC",
+  "short_name": "Ramadan ARC",
+  "description": "Prayer times, reminders, duas, hadiths, habits, and Arabic practice for Ramadan.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#f8f4ea",
+  "theme_color": "#18785c",
+  "icons": [
+    {
+      "src": "/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

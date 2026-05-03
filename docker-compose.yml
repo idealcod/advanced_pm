@@ -1,0 +1,87 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: ramadan_arc
+    ports:
+      - "5433:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d ramadan_arc"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      app_net:
+        ipv4_address: 172.28.0.10
+
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6380:6379"
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      app_net:
+        ipv4_address: 172.28.0.11
+
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile.backend
+    environment:
+      POSTGRES_HOST: 172.28.0.10
+      POSTGRES_PORT: 5432
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: ramadan_arc
+      POSTGRES_SSLMODE: disable
+      JWT_SECRET: change_me_to_at_least_32_characters
+      JWT_TTL_HOURS: 24
+      REDIS_HOST: 172.28.0.11
+      REDIS_PORT: 6379
+      FRONTEND_ORIGIN: http://localhost:3000
+      APP_ENV: dev
+      LOG_FORMAT: text
+      LOG_LEVEL: info
+    ports:
+      - "8080:8080"
+    restart: on-failure
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    networks:
+      app_net:
+        ipv4_address: 172.28.0.12
+
+  frontend:
+    build:
+      context: ./ramadan-arc-frontend
+    environment:
+      NEXT_PUBLIC_API_URL: http://localhost:8080
+    ports:
+      - "3000:3000"
+    restart: on-failure
+    depends_on:
+      - backend
+    networks:
+      app_net:
+        ipv4_address: 172.28.0.13
+
+volumes:
+  postgres_data:
+
+networks:
+  app_net:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.28.0.0/16

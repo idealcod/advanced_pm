@@ -1,0 +1,95 @@
+@import url("https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500;600;700&display=swap");
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --cream: #0d1117;
+  --soft: #161c26;
+  --green: #1a8a72;
+  --green-dark: #f4edd6;
+  --green-soft: rgba(26, 138, 114, 0.1);
+  --gold: #c9963a;
+  --gold-dark: #c9963a;
+  --gold-soft: rgba(201, 150, 58, 0.15);
+  --ink: #f4edd6;
+  --muted: #8a8070;
+  --line: rgba(201, 150, 58, 0.18);
+  --night: #0d1117;
+  --night-card: #161c26;
+  --night-border: rgba(201, 150, 58, 0.18);
+}
+
+.dark {
+  --cream: #0d1117;
+  --soft: #161c26;
+  --green: #1a8a72;
+  --green-dark: #f4edd6;
+  --green-soft: rgba(26, 138, 114, 0.1);
+  --gold: #c9963a;
+  --gold-dark: #c9963a;
+  --gold-soft: rgba(201, 150, 58, 0.15);
+  --ink: #f4edd6;
+  --muted: #8a8070;
+  --line: rgba(201, 150, 58, 0.18);
+}
+
+@layer base {
+  * {
+    box-sizing: border-box;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    min-height: 100vh;
+    overflow-x: hidden;
+    background: var(--cream);
+    color: var(--ink);
+    font-family: "DM Sans", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  }
+
+  button,
+  input,
+  select,
+  textarea {
+    font: inherit;
+  }
+}
+
+@layer utilities {
+  .font-display {
+    font-family: "Amiri", Georgia, "Times New Roman", serif;
+  }
+
+  .rounded-card {
+    border-radius: 16px;
+  }
+
+  .shadow-soft {
+    box-shadow: 0 18px 48px rgba(0, 0, 0, 0.18);
+  }
+
+  .shadow-premium {
+    box-shadow: 0 28px 80px rgba(0, 0, 0, 0.28);
+  }
+
+  .tabular-nums {
+    font-variant-numeric: tabular-nums;
+  }
+}
+
+@keyframes twinkle {
+  0%,
+  100% {
+    opacity: 0.14;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.7;
+    transform: scale(1.45);
+  }
+}
