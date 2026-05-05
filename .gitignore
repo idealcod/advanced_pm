@@ -4,6 +4,9 @@
 
 
 .env
+.env.*
+!.env.example
+!ramadan-arc-frontend/.env.example
 
 
 
@@ -17,4 +20,3 @@
 
 node_modules/
 .next/
-.env.local

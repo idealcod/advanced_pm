@@ -5,8 +5,7 @@
 Ramadan ARC
 
 ## 2. Topic Area
-
-AI Systems, Islamic productivity, education, and personal habit tracking.
+ Islamic productivity, education, and personal habit tracking.
 
 ## 3. Problem Statement
 
@@ -102,6 +101,106 @@ After the containers start:
 - Health check: http://localhost:8080/health
 
 If port `5432` is already used by a local PostgreSQL installation, stop the local PostgreSQL service or change the exposed database port in `docker-compose.yml`.
+
+## Free Deployment
+
+This project is split into:
+
+- Backend: Go API in `src/`, deployed to Render with `Dockerfile.backend`
+- Frontend: Next.js app in `ramadan-arc-frontend/`, deployed to Vercel
+
+The frontend must call the backend through the public Render API URL. Do not use `localhost` in Vercel.
+
+### Backend Deployment on Render
+
+The repository includes `render.yaml`, so the backend can be created as a Render Blueprint. The backend uses Docker, listens on `0.0.0.0`, and reads the port from `PORT` with `8080` as the default.
+
+Create a PostgreSQL database first. A free external PostgreSQL provider such as Neon or Supabase works well. Render Postgres also works if it is available in your Render account. Copy its connection string and use it as `DATABASE_URL`.
+
+Render Dashboard steps:
+
+1. Push this repository to GitHub.
+2. Open Render Dashboard.
+3. Click New > Blueprint.
+4. Connect this repository.
+5. Render will read `render.yaml` and create the `ramadan-arc-api` Docker web service.
+6. Add the required secret environment variables when Render asks for them.
+7. Deploy the service.
+
+The backend will be available at:
+
+```text
+https://your-render-backend.onrender.com
+```
+
+Check the deployed backend:
+
+```powershell
+curl https://your-render-backend.onrender.com/health
+```
+
+Backend environment variables:
+
+```text
+DATABASE_URL=postgres://USER:PASSWORD@HOST:5432/ramadan_arc?sslmode=require
+JWT_SECRET=change_me_to_a_real_32_plus_character_secret
+JWT_TTL_HOURS=24
+FRONTEND_ORIGIN=https://your-vercel-app.vercel.app
+PORT=8080
+APP_ENV=production
+LOG_FORMAT=text
+LOG_LEVEL=info
+```
+
+Optional backend variables:
+
+```text
+REDIS_URL=redis://...
+ANTHROPIC_API_KEY=...
+CLAUDE_MODEL=claude-haiku-4-5
+```
+
+If `REDIS_URL` is not set, the backend uses an in-process event bus.
+
+### Frontend Deployment on Vercel
+
+Import the GitHub repository in Vercel and set the frontend root directory to:
+
+```text
+ramadan-arc-frontend
+```
+
+In Vercel, add this environment variable:
+
+```text
+NEXT_PUBLIC_API_URL=https://your-render-backend.onrender.com
+```
+
+Then deploy from the Vercel dashboard, or with the CLI:
+
+```powershell
+cd ramadan-arc-frontend
+vercel
+vercel --prod
+```
+
+After Vercel gives you the frontend URL, update the Render backend environment variable:
+
+```text
+FRONTEND_ORIGIN=https://your-vercel-app.vercel.app
+```
+
+Then redeploy the Render backend.
+
+### How Frontend Connects to Backend
+
+The Next.js frontend reads the public backend URL from:
+
+```text
+NEXT_PUBLIC_API_URL
+```
+
+API calls are made from `ramadan-arc-frontend/src/lib/api.ts`, and Server-Sent Events use the same variable in `ramadan-arc-frontend/src/hooks/useRamadanEvents.ts`.
 
 ## Local Development
 

@@ -41,7 +41,7 @@ func corsMiddleware(next http.Handler) http.Handler {
 
 func originAllowed(origin, allowed string) bool {
 	for _, item := range strings.Split(allowed, ",") {
-		if strings.TrimSpace(item) == origin {
+		if strings.TrimRight(strings.TrimSpace(item), "/") == origin {
 			return true
 		}
 	}
@@ -85,9 +85,14 @@ func main() {
 	mux.HandleFunc("/events", internal.EventsHandler)
 	mux.Handle("/content", internal.RequireRole("Admin")(http.HandlerFunc(internal.ContentHandler)))
 
+	port := strings.TrimSpace(os.Getenv("PORT"))
+	if port == "" {
+		port = "8080"
+	}
+
 	handler := internal.RequestLogger(corsMiddleware(mux))
 	server := &http.Server{
-		Addr:              ":8080",
+		Addr:              "0.0.0.0:" + port,
 		Handler:           handler,
 		ReadHeaderTimeout: 5 * time.Second,
 	}

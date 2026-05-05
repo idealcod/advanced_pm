@@ -11,7 +11,7 @@ npm install
 # 2. Настроить окружение
 cp .env.example .env.local
 # Открой .env.local и укажи адрес бэкенда:
-# NEXT_PUBLIC_API_URL=http://localhost:8080
+# NEXT_PUBLIC_API_URL=https://your-render-backend.onrender.com
 
 # 3. Запустить бэкенд (в другом терминале)
 cd ../advanced_pm
@@ -31,7 +31,7 @@ import "net/http"
 
 func corsMiddleware(next http.Handler) http.Handler {
     return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-        w.Header().Set("Access-Control-Allow-Origin", "http://localhost:3000")
+        w.Header().Set("Access-Control-Allow-Origin", "https://your-vercel-app.vercel.app")
         w.Header().Set("Access-Control-Allow-Methods", "GET, POST, OPTIONS")
         w.Header().Set("Access-Control-Allow-Headers", "Content-Type, X-Role")
         if r.Method == http.MethodOptions {

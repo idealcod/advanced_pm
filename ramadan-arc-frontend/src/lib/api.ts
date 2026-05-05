@@ -1,4 +1,4 @@
-const BASE = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:8080";
+const BASE = process.env.NEXT_PUBLIC_API_URL?.replace(/\/$/, "");
 const SESSION_KEY = "ramadan-arc-user";
 const AUTH_EXPIRED_EVENT = "ramadan-arc-auth-expired";
 
@@ -130,6 +130,8 @@ function authHeaders(): Record<string, string> {
 }
 
 async function request<T>(path: string, init: RequestInit = {}, retry = true): Promise<T> {
+  if (!BASE) throw new Error("NEXT_PUBLIC_API_URL is not configured");
+
   const headers = {
     ...authHeaders(),
     ...(init.headers as Record<string, string> | undefined),
